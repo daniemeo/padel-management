@@ -1,5 +1,6 @@
 package it.solvingteam.padelmanagement.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
@@ -8,7 +9,10 @@ public class NewClubProposalDto {
 	private String id;
 	private String name;
 	private String city;
+	private String address;
 	private Byte[] logo;
+	
+	@Valid 
 	private UserDto userDto;
 	
 	public String getId() {
@@ -30,6 +34,12 @@ public class NewClubProposalDto {
 		this.city = city;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public Byte[] getLogo() {
 		return logo;
 	}

@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.model.user.User;
 
 @Entity
@@ -17,9 +16,6 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "club_id",referencedColumnName = "id")
-	private Club club;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -41,13 +37,7 @@ public class Admin {
 		this.user = user;
 	}
 
-	public Club getClub() {
-		return club;
-	}
 
-	public void setClub(Club club) {
-		this.club = club;
-	}
 	
 	
 	

@@ -9,9 +9,6 @@ public class AdminDto {
 	
 	@Valid 
 	private UserDto userDto;
-	
-	@Valid 
-	private ClubDto clubDto;
 
 	public String getId() {
 		return id;
@@ -29,13 +26,6 @@ public class AdminDto {
 		this.userDto = userDto;
 	}
 
-	public ClubDto getClubDto() {
-		return clubDto;
-	}
-
-	public void setClubDto(ClubDto clubDto) {
-		this.clubDto = clubDto;
-	}
 	
 	
 }

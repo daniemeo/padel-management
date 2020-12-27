@@ -10,7 +10,7 @@ public class CourtDto {
 	private String id;
 	private String name;
 	private Boolean isInactive;
-	private String price;
+
 	
 	@Valid 
 	private ClubDto clubDto;
@@ -41,13 +41,6 @@ public class CourtDto {
 		this.isInactive = isInactive;
 	}
 
-	public String getPrice() {
-		return price;
-	}
-
-	public void setPrice(String price) {
-		this.price = price;
-	}
 
 	public ClubDto getClubDto() {
 		return clubDto;
@@ -67,7 +60,7 @@ public class CourtDto {
 
 	@Override
 	public String toString() {
-		return "name=" + name + ", isInactive=" + isInactive + ", price=" + price;
+		return "name=" + name + ", isInactive=" + isInactive ;
 	}
 	
 	

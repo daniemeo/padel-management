@@ -21,8 +21,7 @@ public class Court {
 	private Long id;
 	private String name;
 	private Boolean isInactive;
-	private Integer price;
-	
+
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "club_id", nullable = false)
@@ -59,16 +58,6 @@ public class Court {
 
 	public void setIsInactive(Boolean isInactive) {
 		this.isInactive = isInactive;
-	}
-
-
-	public Integer getPrice() {
-		return price;
-	}
-
-
-	public void setPrice(Integer price) {
-		this.price = price;
 	}
 
 

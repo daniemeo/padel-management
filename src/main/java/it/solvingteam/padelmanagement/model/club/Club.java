@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import it.solvingteam.padelmanagement.model.admin.Admin;
 import it.solvingteam.padelmanagement.model.court.Court;
 import it.solvingteam.padelmanagement.model.joinProposal.JoinProposal;
 import it.solvingteam.padelmanagement.model.notice.Notice;
@@ -25,11 +29,14 @@ public class Club {
 	private Long id;
 	private String city;
 	private String name;
+	private String address;
 	@Lob @Basic(fetch=FetchType.EAGER)
 	@Column(name="PROFILE_PIC")
 	private Byte[] logo;
 	
-	
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "admin_id",referencedColumnName = "id")
+	private Admin admin;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "club", orphanRemoval = true)
 	private List<JoinProposal> joinProposals = new ArrayList<>();
@@ -67,6 +74,14 @@ public class Club {
 		this.name = name;
 	}
 
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public Byte[] getLogo() {
 		return logo;
@@ -106,6 +121,14 @@ public class Club {
 
 	public void setCourts(List<Court> courts) {
 		this.courts = courts;
+	}
+
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
 	}
 	
 	

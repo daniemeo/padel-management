@@ -36,8 +36,7 @@ NewClubProposalMapper newClubProposalMapper;
 		dto.setUsername(entity.getUsername());
 		dto.setPassword(entity.getPassword());
 		dto.setProfilePic(entity.getProfilePic());
-		dto.setJoinProposalDto(joinProposalMapper.convertEntityToDto(entity.getJoinProposals()));
-		dto.setNewClubProposalDto(newClubProposalMapper.convertEntityToDto(entity.getNewClubproposal()));
+
 		return dto;
 	}
 
@@ -56,8 +55,7 @@ NewClubProposalMapper newClubProposalMapper;
 		user.setUsername(dto.getUsername());
 		user.setPassword(dto.getPassword());
 		user.setProfilePic(dto.getProfilePic());
-		user.setJoinProposals(joinProposalMapper.convertDtoToEntity(dto.getJoinProposalDto()));
-		user.setNewClubproposal(newClubProposalMapper.convertDtoToEntity(dto.getNewClubProposalDto()));
+
 		return user;
 		}
 //	@Override

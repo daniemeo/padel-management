@@ -10,6 +10,7 @@ import it.solvingteam.padelmanagement.model.newClubProposal.NewClubProposal;
 
 @Component
 public class NewClubProposalMapper extends AbstractMapper<NewClubProposal, NewClubProposalDto>{
+	
 @Autowired
 UserMapper userMapper;
 
@@ -22,8 +23,9 @@ UserMapper userMapper;
 		dto.setId(String.valueOf(entity.getId()));
 		dto.setName(entity.getName());
 		dto.setCity(entity.getCity());
+		dto.setAddress(entity.getAddress());
 		dto.setLogo(entity.getLogo());
-		dto.setUserDto(userMapper.convertEntityToDto(entity.getUser()));
+		dto.setUserDto(userMapper.convertEntityToDto(entity.getCreator()));
 		return dto;
 	}
 
@@ -36,8 +38,9 @@ UserMapper userMapper;
 		newClubProposal.setId(Long.parseLong(dto.getId()));
 		newClubProposal.setName(dto.getName());
 		newClubProposal.setCity(dto.getCity());
+		newClubProposal.setAddress(dto.getAddress());
 		newClubProposal.setLogo(dto.getLogo());
-		newClubProposal.setUser(userMapper.convertDtoToEntity(dto.getUserDto()));
+		newClubProposal.setCreator(userMapper.convertDtoToEntity(dto.getUserDto()));
 		return newClubProposal;
 	}
 
