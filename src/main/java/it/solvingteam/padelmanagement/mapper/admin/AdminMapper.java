@@ -34,7 +34,10 @@ UserMapper userMapper;
 			return null;
 		}
 		Admin admin = new Admin();
-		admin.setId(Long.parseLong(dto.getId()));
+		if(dto.getId()!= null) {
+			admin.setId(Long.parseLong(dto.getId()));
+		}
+		
 		admin.setUser(userMapper.convertDtoToEntity(dto.getUserDto()));
 		return admin;
 	}

@@ -1,28 +1,33 @@
-package it.solvingteam.padelmanagement.dto;
+package it.solvingteam.padelmanagement.dto.message.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.NotNull;
-
-
-public class UserDto {
-	@NotNull
-	private String id;
+public class InsertUserDto {
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String surname;
+	
+	@NotBlank
 	private String dateOfBirth;
+	
+	@Email(regexp = ".+@.+\\.[a-z]+")
 	private String mailAddress;
+	
+	@NotBlank
+	@Size(message = "il campo mobile deve contenere anche il prefisso",max = 13, min = 13)
 	private String mobile;
+	@NotBlank
 	private String username;
+	@NotBlank
 	private String password;
+	@NotBlank
+    private String repeatePassword;
 	private Byte[] profilePic;
-	private String role;
-
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+	
 	public String getName() {
 		return name;
 	}
@@ -71,19 +76,12 @@ public class UserDto {
 	public void setProfilePic(Byte[] profilePic) {
 		this.profilePic = profilePic;
 	}
-	public String getRole() {
-		return role;
+	public String getRepeatePassword() {
+		return repeatePassword;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRepeatePassword(String repeatePassword) {
+		this.repeatePassword = repeatePassword;
 	}
-
-	@Override
-	public String toString() {
-		return  "username=" + username ;
-	}
-
-	
 	
 	
 }

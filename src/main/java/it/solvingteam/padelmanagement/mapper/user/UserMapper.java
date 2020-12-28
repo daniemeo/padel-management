@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 
 
 import it.solvingteam.padelmanagement.dto.UserDto;
+import it.solvingteam.padelmanagement.dto.message.user.InsertUserDto;
 import it.solvingteam.padelmanagement.mapper.AbstractMapper;
 import it.solvingteam.padelmanagement.mapper.joinProposal.JoinProposalMapper;
 import it.solvingteam.padelmanagement.mapper.newClubProposal.NewClubProposalMapper;
+import it.solvingteam.padelmanagement.model.user.Role;
 import it.solvingteam.padelmanagement.model.user.User;
 
 @Component
@@ -36,6 +38,7 @@ NewClubProposalMapper newClubProposalMapper;
 		dto.setUsername(entity.getUsername());
 		dto.setPassword(entity.getPassword());
 		dto.setProfilePic(entity.getProfilePic());
+		dto.setRole(String.valueOf(entity.getRole()));
 
 		return dto;
 	}
@@ -46,7 +49,31 @@ NewClubProposalMapper newClubProposalMapper;
 			return null;
 		}
 		User user = new User();
+		
+		if(dto.getId()!= null) {
 		user.setId(Long.parseLong(dto.getId()));
+		}
+		user.setName(dto.getName());
+		user.setSurname(dto.getSurname());
+		user.setDateOfBirth(LocalDate.parse(dto.getDateOfBirth()));
+		user.setMailAddress(dto.getMailAddress());
+		user.setMobile(dto.getMobile());
+		user.setUsername(dto.getUsername());
+		user.setPassword(dto.getPassword());
+		user.setProfilePic(dto.getProfilePic());
+		user.setRole(Enum.valueOf(Role.class, dto.getRole()));
+
+		return user;
+		}
+	
+	
+	public User convertDtoToEntityInsert(InsertUserDto dto) {
+		if (dto == null) {
+			return null;
+		}
+		User user = new User();
+		
+		
 		user.setName(dto.getName());
 		user.setSurname(dto.getSurname());
 		user.setDateOfBirth(LocalDate.parse(dto.getDateOfBirth()));
@@ -58,6 +85,7 @@ NewClubProposalMapper newClubProposalMapper;
 
 		return user;
 		}
+	
 //	@Override
 //	 public List<UserDto> convertEntityToDto(List<User> entities) {
 //	        if (entities == null) {
