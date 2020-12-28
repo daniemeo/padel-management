@@ -56,7 +56,9 @@ public class ClubMapper extends AbstractMapper<Club, ClubDto> {
 		}
 
 		Club club = new Club();
-		club.setId(Long.parseLong(dto.getId()));
+		if(dto.getId()!= null) {
+			club.setId(Long.parseLong(dto.getId()));
+		}
 		club.setCity(dto.getCity());
 		club.setName(dto.getName());
 		club.setAddress(dto.getAddress());

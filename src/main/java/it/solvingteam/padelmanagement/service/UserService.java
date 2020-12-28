@@ -28,15 +28,17 @@ public class UserService {
 	        return userRepository.findByUsername(username);
 	    }
 	  
-	   public void signup(InsertUserDto insertUserDto) {
+	   public UserDto signup(InsertUserDto insertUserDto) {
 		   
 	       // String passwordEncoded = passwordEncoder.encode(insertUserDto.getPassword());
 	        User user =userMapper.convertDtoToEntityInsert(insertUserDto);
 	       // user.setPassword(passwordEncoded);
 	    
-	        user.setRole(Role.ROLE_GUEST);
+	       user.setRole(Role.ROLE_GUEST);
 	       
 	        this.userRepository.save(user);
+	       return userMapper.convertEntityToDto(user);
+	       
 	    }
 	   
 	   public UserDto signIn(String username, String password) throws Exception {

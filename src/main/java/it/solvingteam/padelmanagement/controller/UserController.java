@@ -33,14 +33,14 @@ public class UserController {
 	 UserSignupMessageValidator userSignUpMessageValidator;
 	
 	 @PostMapping("signup")
-	 public ResponseEntity<InsertUserDto> signupUser(@Valid @RequestBody InsertUserDto insertUserDto, BindingResult bindingResult)
+	 public ResponseEntity<UserDto> signupUser(@Valid @RequestBody InsertUserDto insertUserDto, BindingResult bindingResult)
 				throws Exception {
 		 userSignUpMessageValidator.validate(insertUserDto, bindingResult);
 		 if (bindingResult.hasErrors()) {
 				throw new BindingResultException(bindingResult);
 			}
-		 userService.signup(insertUserDto);
-		 return ResponseEntity.status(HttpStatus.OK).body(insertUserDto);
+		 UserDto userDto = userService.signup(insertUserDto);
+		 return ResponseEntity.status(HttpStatus.OK).body(userDto);
 	 }
 	 
 	 @PostMapping("login")

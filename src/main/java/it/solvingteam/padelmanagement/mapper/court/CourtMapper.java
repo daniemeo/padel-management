@@ -43,7 +43,9 @@ GameMapper gameMapper;
 		}
 		
 		Court court = new Court();
-		court.setId(Long.parseLong(dto.getId()));
+		if(dto.getId()!= null) {
+		   court.setId(Long.parseLong(dto.getId()));
+		}
 		court.setName(dto.getName());
 		court.setIsInactive(dto.getIsInactive());
 		court.setClub(clubMapper.convertDtoToEntity(dto.getClubDto()));

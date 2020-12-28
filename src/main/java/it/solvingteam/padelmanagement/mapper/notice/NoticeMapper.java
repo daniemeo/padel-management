@@ -37,7 +37,9 @@ public class NoticeMapper extends AbstractMapper<Notice, NoticeDto> {
 			return null;
 		}
 		Notice notice = new Notice();
+		if(dto.getId()!= null) {
 		notice.setId(Long.parseLong((dto.getId())));
+		}
 		notice.setMessage(dto.getMessage());
 		notice.setCreationDate(LocalDate.parse(dto.getCreationDate()));
 		notice.setClub(clubMapper.convertDtoToEntity(dto.getClubDto()));

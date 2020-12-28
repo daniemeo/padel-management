@@ -1,14 +1,16 @@
-package it.solvingteam.padelmanagement.dto;
+package it.solvingteam.padelmanagement.dto.message.newClubProposal;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
+import it.solvingteam.padelmanagement.dto.UserDto;
 
-public class NewClubProposalDto {
-	@NotNull
-	private String id;
+public class InsertNewClubProposalDto {
+	@NotBlank
 	private String name;
+	@NotBlank
 	private String city;
+	@NotBlank
 	private String address;
 	private String proposalStatus;
 	private Byte[] logo;
@@ -16,12 +18,7 @@ public class NewClubProposalDto {
 	@Valid 
 	private UserDto userDto;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -41,6 +38,13 @@ public class NewClubProposalDto {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public String getProposalStatus() {
+		return proposalStatus;
+	}
+	public void setProposalStatus(String proposalStatus) {
+		this.proposalStatus = proposalStatus;
+	}
 	public Byte[] getLogo() {
 		return logo;
 	}
@@ -53,13 +57,5 @@ public class NewClubProposalDto {
 	public void setUserDto(UserDto userDto) {
 		this.userDto = userDto;
 	}
-	public String getProposalStatus() {
-		return proposalStatus;
-	}
-	public void setProposalStatus(String proposalStatus) {
-		this.proposalStatus = proposalStatus;
-	}
-	
-	
 	
 }

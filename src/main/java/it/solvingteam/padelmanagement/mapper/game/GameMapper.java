@@ -47,7 +47,9 @@ PlayerMapper playerMapper;
 			return null;
 		}
 		Game game = new Game();
-		game.setId(Long.parseLong(dto.getId()));
+		if(dto.getId()!= null) {
+			game.setId(Long.parseLong(dto.getId()));
+		}
 		game.setDate(LocalDate.parse(dto.getDate()));
 		game.setPayed(dto.getPayed());
 		game.setMissingPlayers(Integer.parseInt(dto.getMissingPlayers()));

@@ -82,9 +82,9 @@ NewClubProposalMapper newClubProposalMapper;
 		user.setUsername(dto.getUsername());
 		user.setPassword(dto.getPassword());
 		user.setProfilePic(dto.getProfilePic());
-
 		return user;
 		}
+	
 	
 //	@Override
 //	 public List<UserDto> convertEntityToDto(List<User> entities) {

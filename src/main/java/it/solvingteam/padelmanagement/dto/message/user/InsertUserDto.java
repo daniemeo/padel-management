@@ -27,7 +27,7 @@ public class InsertUserDto {
 	@NotBlank
     private String repeatePassword;
 	private Byte[] profilePic;
-	
+	private String role;
 	public String getName() {
 		return name;
 	}
@@ -81,6 +81,12 @@ public class InsertUserDto {
 	}
 	public void setRepeatePassword(String repeatePassword) {
 		this.repeatePassword = repeatePassword;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	
