@@ -35,6 +35,9 @@ AdminService adminService;
 @Autowired
 ClubService clubService;
 
+@Autowired
+EmailService emailService;
+
 public InsertNewClubProposalDto insertNewClubProposal(InsertNewClubProposalDto insertNewClubProposalDto) {
 	NewClubProposal newClubProposal = newClubProposalMapper.convertDtoToEntityInsert(insertNewClubProposalDto);
 	 newClubProposal.setProposalStatus(ProposalStatus.PENDING);
@@ -72,6 +75,7 @@ public void clubApproval(String id) throws Exception{
     Admin admin = adminService.insertAdmin(user);
 	Club club = new Club(newCLubProposal.getCity(),newCLubProposal.getName(),newCLubProposal.getAddress(),admin);
     club = clubService.insertClub(club);
+    emailService.sendMail(user.getMailAddress(),"club approvato" ,"il tuo club" +" " +club.getName()+" " + "è stato approvato");
 	//invio mail di conferma all'indirizzo mail dell'admin
 }
 
@@ -85,7 +89,9 @@ public void clubReject(String id) throws Exception{
 	}
 	newCLubProposal.setProposalStatus(ProposalStatus.REJECTED);
 	this.update(newCLubProposal);
+	User user = userService.findById(newCLubProposal.getCreator().getId());
 	
+	emailService.sendMail(user.getMailAddress(), "club non approvato", "la tua proposta non è stata approvata");
 	//invio mail di conferma all'indirizzo mail dell'admin
 }
 }
