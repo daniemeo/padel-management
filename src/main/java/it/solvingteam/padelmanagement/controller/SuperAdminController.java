@@ -1,6 +1,5 @@
 package it.solvingteam.padelmanagement.controller;
 
-import javax.net.ssl.SSLEngineResult.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

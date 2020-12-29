@@ -1,6 +1,7 @@
 package it.solvingteam.padelmanagement.model.user;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -94,6 +95,12 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", surname=" + surname + ", dateOfBirth=" + dateOfBirth + ", mailAddress="
+				+ mailAddress + ", mobile=" + mobile + ", username=" + username + ", profilePic="
+				+ Arrays.toString(profilePic) + ", role=" + role + "]";
 	}
 
 	

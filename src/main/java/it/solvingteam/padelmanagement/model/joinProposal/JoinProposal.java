@@ -71,7 +71,18 @@ public class JoinProposal {
 	public void setClub(Club club) {
 		this.club = club;
 	}
+
 	
+	@Override
+    public String toString() {
+        return " Livello di gioco = " + " " + userLevel + 
+                " \n " +
+                " Stato proposta = " + proposalStatus + 
+                " \n " +
+                " Utente = " + user + 
+                " \n " +
+                " Circolo = " + club + " ";
+    }
 	
 	
 }

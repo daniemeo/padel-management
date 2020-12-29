@@ -56,8 +56,7 @@ public List<NewClubProposalDto> findAll() {
 	
 }
 public NewClubProposal update(NewClubProposal newClubProposal) {
-	newClubProposal = this.newClubProposalRepository.save(newClubProposal);
-	return newClubProposal;
+	return this.newClubProposalRepository.save(newClubProposal);
 }
 
 
@@ -71,7 +70,7 @@ public void clubApproval(String id) throws Exception{
 	}
 	
 	if(!(newCLubProposal.getProposalStatus() == ProposalStatus.PENDING) ){
-		throw new Exception("proposta già presentata");
+		throw new Exception("proposta già gestita");
 	}
 	newCLubProposal.setProposalStatus(ProposalStatus.APPROVED);
 	this.update(newCLubProposal);
@@ -92,7 +91,7 @@ public void clubReject(String id) throws Exception{
 		throw new Exception("id non esiste");
 	}
 	if(!(newCLubProposal.getProposalStatus() == ProposalStatus.PENDING) ){
-		throw new Exception("proposta già presentata");
+		throw new Exception("proposta già gestita");
 	}
 	newCLubProposal.setProposalStatus(ProposalStatus.REJECTED);
 	this.update(newCLubProposal);

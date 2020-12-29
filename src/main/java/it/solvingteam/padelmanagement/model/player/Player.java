@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -39,6 +37,18 @@ public class Player {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "player", orphanRemoval = true)
 	private List<Game> games = new ArrayList<>();
 
+
+	public Player() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Player(Integer playerLevel, User user, Club club) {
+		super();
+		this.playerLevel = playerLevel;
+		this.user = user;
+		this.club = club;
+	}
 
 	public Long getId() {
 		return id;

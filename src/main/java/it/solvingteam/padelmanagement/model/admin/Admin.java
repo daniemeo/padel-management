@@ -37,6 +37,11 @@ public class Admin {
 		this.user = user;
 	}
 
+	@Override
+	public String toString() {
+		return "user=" + user ;
+	}
+
 
 	
 	
