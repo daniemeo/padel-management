@@ -22,6 +22,10 @@ public class ClubService {
 	@Autowired
 	ClubMapper clubMapper;
 	
+	public Club insertClub(Club club) {
+		return clubRepository.save(club);
+	}
+	
 	public List<ClubDto> findAll() {
 		List<Club> clubs = this.clubRepository.findAll().stream().collect(Collectors.toList());
 		return clubMapper.convertEntityToDto(clubs);

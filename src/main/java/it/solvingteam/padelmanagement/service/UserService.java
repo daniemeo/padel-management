@@ -28,6 +28,15 @@ public class UserService {
 	        return userRepository.findByUsername(username);
 	    }
 	  
+	  public User findById(Long id) {
+		  return userRepository.findById(id).get();
+	  }
+	  
+	  public User updateRole(User user) {
+		  user = this.userRepository.save(user);
+		  return user;
+	  }
+	  
 	   public UserDto signup(InsertUserDto insertUserDto) {
 		   
 	       // String passwordEncoded = passwordEncoder.encode(insertUserDto.getPassword());

@@ -2,6 +2,8 @@ package it.solvingteam.padelmanagement.service;
 
 import java.util.List;
 
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,10 @@ import it.solvingteam.padelmanagement.dto.NewClubProposalDto;
 import it.solvingteam.padelmanagement.dto.message.newClubProposal.InsertNewClubProposalDto;
 import it.solvingteam.padelmanagement.mapper.newClubProposal.NewClubProposalMapper;
 import it.solvingteam.padelmanagement.model.ProposalStatus;
+import it.solvingteam.padelmanagement.model.admin.Admin;
+import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.model.newClubProposal.NewClubProposal;
+import it.solvingteam.padelmanagement.model.user.User;
 import it.solvingteam.padelmanagement.repository.NewClubProposalRepository;
 
 @Service
@@ -20,6 +25,15 @@ NewClubProposalRepository newClubProposalRepository;
 
 @Autowired
 NewClubProposalMapper newClubProposalMapper;
+
+@Autowired
+UserService userService;
+
+@Autowired
+AdminService adminService;
+
+@Autowired
+ClubService clubService;
 
 public InsertNewClubProposalDto insertNewClubProposal(InsertNewClubProposalDto insertNewClubProposalDto) {
 	NewClubProposal newClubProposal = newClubProposalMapper.convertDtoToEntityInsert(insertNewClubProposalDto);
@@ -37,5 +51,41 @@ public List<NewClubProposalDto> findAll() {
 	List<NewClubProposal> newClubProposal = this.newClubProposalRepository.findAll();
 	return newClubProposalMapper.convertEntityToDto(newClubProposal);
 	
+}
+public NewClubProposal update(NewClubProposal newClubProposal) {
+	newClubProposal = this.newClubProposalRepository.save(newClubProposal);
+	return newClubProposal;
+}
+
+
+public void clubApproval(String id) throws Exception{
+	if(id == null || !StringUtils.isNumeric(id) ) {
+		throw new Exception("id non esiste");
+	}
+	NewClubProposal newCLubProposal = newClubProposalRepository.findById(Long.parseLong(id)).get();
+	if( newCLubProposal == null ) {
+		throw new Exception("id non esiste");
+	}
+	newCLubProposal.setProposalStatus(ProposalStatus.APPROVED);
+	this.update(newCLubProposal);
+	User user = userService.findById(newCLubProposal.getCreator().getId());
+    Admin admin = adminService.insertAdmin(user);
+	Club club = new Club(newCLubProposal.getCity(),newCLubProposal.getName(),newCLubProposal.getAddress(),admin);
+    club = clubService.insertClub(club);
+	//invio mail di conferma all'indirizzo mail dell'admin
+}
+
+public void clubReject(String id) throws Exception{
+	if(id == null || !StringUtils.isNumeric(id) ) {
+		throw new Exception("id non esiste");
+	}
+	NewClubProposal newCLubProposal = newClubProposalRepository.findById(Long.parseLong(id)).get();
+	if( newCLubProposal == null ) {
+		throw new Exception("id non esiste");
+	}
+	newCLubProposal.setProposalStatus(ProposalStatus.REJECTED);
+	this.update(newCLubProposal);
+	
+	//invio mail di conferma all'indirizzo mail dell'admin
 }
 }

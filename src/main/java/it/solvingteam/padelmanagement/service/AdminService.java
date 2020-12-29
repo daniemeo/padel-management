@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import it.solvingteam.padelmanagement.dto.AdminDto;
 import it.solvingteam.padelmanagement.mapper.admin.AdminMapper;
 import it.solvingteam.padelmanagement.model.admin.Admin;
+import it.solvingteam.padelmanagement.model.user.Role;
+import it.solvingteam.padelmanagement.model.user.User;
 import it.solvingteam.padelmanagement.repository.AdminRepository;
 import it.solvingteam.padelmanagement.util.Util;
 
@@ -22,6 +24,16 @@ public class AdminService {
 	@Autowired
 	AdminMapper adminMapper;
 	
+	@Autowired
+	UserService userService;
+	
+	public Admin insertAdmin(User user) {
+		user.setRole(Role.ROLE_ADMIN);
+		user = userService.updateRole(user);
+		Admin admin = new Admin();
+		admin.setUser(user);
+		return adminRepository.save(admin);
+	}
 	
 	public List<AdminDto> findAll() {
 		List<Admin> admin = this.adminRepository.findAll().stream().collect(Collectors.toList());
