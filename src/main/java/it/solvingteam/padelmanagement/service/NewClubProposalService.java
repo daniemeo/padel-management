@@ -69,6 +69,10 @@ public void clubApproval(String id) throws Exception{
 	if( newCLubProposal == null ) {
 		throw new Exception("id non esiste");
 	}
+	
+	if(!(newCLubProposal.getProposalStatus() == ProposalStatus.PENDING) ){
+		throw new Exception("proposta già presentata");
+	}
 	newCLubProposal.setProposalStatus(ProposalStatus.APPROVED);
 	this.update(newCLubProposal);
 	User user = userService.findById(newCLubProposal.getCreator().getId());
@@ -76,22 +80,24 @@ public void clubApproval(String id) throws Exception{
 	Club club = new Club(newCLubProposal.getCity(),newCLubProposal.getName(),newCLubProposal.getAddress(),admin);
     club = clubService.insertClub(club);
     emailService.sendMail(user.getMailAddress(),"club approvato" ,"il tuo club" +" " +club.getName()+" " + "è stato approvato");
-	//invio mail di conferma all'indirizzo mail dell'admin
 }
 
 public void clubReject(String id) throws Exception{
 	if(id == null || !StringUtils.isNumeric(id) ) {
 		throw new Exception("id non esiste");
 	}
+	
 	NewClubProposal newCLubProposal = newClubProposalRepository.findById(Long.parseLong(id)).get();
 	if( newCLubProposal == null ) {
 		throw new Exception("id non esiste");
+	}
+	if(!(newCLubProposal.getProposalStatus() == ProposalStatus.PENDING) ){
+		throw new Exception("proposta già presentata");
 	}
 	newCLubProposal.setProposalStatus(ProposalStatus.REJECTED);
 	this.update(newCLubProposal);
 	User user = userService.findById(newCLubProposal.getCreator().getId());
 	
 	emailService.sendMail(user.getMailAddress(), "club non approvato", "la tua proposta non è stata approvata");
-	//invio mail di conferma all'indirizzo mail dell'admin
 }
 }

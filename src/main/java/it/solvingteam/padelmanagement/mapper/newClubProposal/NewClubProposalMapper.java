@@ -59,7 +59,6 @@ UserMapper userMapper;
 		newClubProposal.setName(dto.getName());
 		newClubProposal.setCity(dto.getCity());
 		newClubProposal.setAddress(dto.getAddress());
-	//	newClubProposal.setProposalStatus(Enum.valueOf(ProposalStatus.class,dto.getProposalStatus()));
 		newClubProposal.setLogo(dto.getLogo());
 		newClubProposal.setCreator(userMapper.convertDtoToEntity(dto.getUserDto()));
 		return newClubProposal;

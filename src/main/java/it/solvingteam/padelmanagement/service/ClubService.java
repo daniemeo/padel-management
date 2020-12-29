@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import it.solvingteam.padelmanagement.dto.ClubDto;
 import it.solvingteam.padelmanagement.mapper.club.ClubMapper;
+import it.solvingteam.padelmanagement.mapper.club.GetClubMapper;
 import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.repository.ClubRepository;
-import it.solvingteam.padelmanagement.util.Util;
 
 @Service
 public class ClubService {
@@ -22,23 +22,22 @@ public class ClubService {
 	@Autowired
 	ClubMapper clubMapper;
 	
+	@Autowired 
+	GetClubMapper getClubMapper;
+	
 	public Club insertClub(Club club) {
 		return clubRepository.save(club);
 	}
 	
 	public List<ClubDto> findAll() {
 		List<Club> clubs = this.clubRepository.findAll().stream().collect(Collectors.toList());
-		return clubMapper.convertEntityToDto(clubs);
+		return getClubMapper.convertEntityToDto(clubs);
 	}
 	
-	public ClubDto findById(@NotNull String id) throws Exception{
+	public Club findById(Long id) {
 		
-		if(!Util.isNumber(id)) {
-			throw new Exception("l'id deve essere un numero");
-		}
-		Club club =  this.clubRepository.findById(Long.parseLong(id)).orElse(null);
-		return clubMapper.convertEntityToDto(club);
-
+		return  this.clubRepository.findById(id).orElse(null);
+		
 	}
 	
 

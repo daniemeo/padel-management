@@ -1,34 +1,14 @@
 package it.solvingteam.padelmanagement.mapper.club;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.solvingteam.padelmanagement.dto.ClubDto;
 import it.solvingteam.padelmanagement.mapper.AbstractMapper;
 import it.solvingteam.padelmanagement.mapper.admin.AdminMapper;
-import it.solvingteam.padelmanagement.mapper.court.CourtMapper;
-import it.solvingteam.padelmanagement.mapper.joinProposal.JoinProposalMapper;
-import it.solvingteam.padelmanagement.mapper.notice.NoticeMapper;
-import it.solvingteam.padelmanagement.mapper.player.PlayerMapper;
 import it.solvingteam.padelmanagement.model.club.Club;
-
 @Component
-public class ClubMapper extends AbstractMapper<Club, ClubDto> {
-	@Autowired
-
-	JoinProposalMapper joinProposalMapper;
-
-	@Autowired
-	NoticeMapper noticeMapper;
-
-	@Autowired
-	PlayerMapper playerMapper;
-
-	@Autowired
-	CourtMapper courtMapper;
-
+public class GetClubMapper  extends AbstractMapper<Club, ClubDto>{
 	@Autowired
 	AdminMapper adminMapper;
 
@@ -43,10 +23,6 @@ public class ClubMapper extends AbstractMapper<Club, ClubDto> {
 		dto.setName(entity.getName());
 		dto.setAddress(entity.getAddress());
 		dto.setLogo(entity.getLogo());
-		dto.setJoinProposalDto(joinProposalMapper.convertEntityToDto(entity.getJoinProposals()));
-		dto.setNoticesDto(noticeMapper.convertEntityToDto(entity.getNotices()));
-		dto.setPlayersDto(playerMapper.convertEntityToDto(entity.getPlayers()));
-		dto.setCourtsDto(courtMapper.convertEntityToDto(entity.getCourts()));
 		dto.setAdminDto(adminMapper.convertEntityToDto(entity.getAdmin()));
 		return dto;
 	}
@@ -65,15 +41,8 @@ public class ClubMapper extends AbstractMapper<Club, ClubDto> {
 		club.setName(dto.getName());
 		club.setAddress(dto.getAddress());
 		club.setLogo(dto.getLogo());
-		club.setJoinProposals(joinProposalMapper.convertDtoToEntity(dto.getJoinProposalDto()));
-		club.setNotices(noticeMapper.convertDtoToEntity(dto.getNoticesDto()));
-		club.setPlayers(playerMapper.convertDtoToEntity(dto.getPlayersDto()));
-		club.setCourts(courtMapper.convertDtoToEntity(dto.getCourtsDto()));
 		club.setAdmin(adminMapper.convertDtoToEntity(dto.getAdminDto()));
 		return club;
 
 	}
-
-	
-
 }
