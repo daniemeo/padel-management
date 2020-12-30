@@ -53,7 +53,6 @@ GetClubMapper getClubMapper;
 		court.setName(dto.getName());
 		court.setIsInactive(dto.getIsInactive());
 		court.setClub(clubMapper.convertDtoToEntity(dto.getClubDto()));
-		court.setGames(gameMapper.convertDtoToEntity(dto.getGameDto()));
 		return court;
 	}
 	
@@ -75,6 +74,7 @@ GetClubMapper getClubMapper;
 			return null;
 		}
 		CourtDto dto = new CourtDto();
+		dto.setId(String.valueOf(entity.getId()));
 		dto.setName(entity.getName());
 		dto.setIsInactive(entity.getIsInactive());
 		dto.setClubDto(getClubMapper.convertEntityToDto(entity.getClub()));
