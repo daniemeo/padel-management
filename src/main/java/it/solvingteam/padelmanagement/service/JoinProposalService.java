@@ -11,6 +11,7 @@ import it.solvingteam.padelmanagement.dto.message.joinProposal.InsertJoinProposa
 import it.solvingteam.padelmanagement.mapper.club.GetClubMapper;
 import it.solvingteam.padelmanagement.mapper.joinProposal.JoinProposalMapper;
 import it.solvingteam.padelmanagement.model.ProposalStatus;
+import it.solvingteam.padelmanagement.model.admin.Admin;
 import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.model.joinProposal.JoinProposal;
 import it.solvingteam.padelmanagement.model.player.Player;
@@ -40,6 +41,8 @@ PlayerService playerService;
 @Autowired
 EmailService emailService;
 
+@Autowired
+AdminService adminService;
 
 	public List<JoinProposal>findJoinProposalByUser(String idUser) {
 		return this.joinProposalRepository.findAllJoinProposalByUser_Id(Long.parseLong(idUser));
@@ -47,7 +50,7 @@ EmailService emailService;
 	
 	public JoinProposalDto insertJoinProposal(InsertJoinProposalDto insertJoinProposalDto) {
 		JoinProposal joinProposal = joinProposalMapper.convertDtoToEntityInsert(insertJoinProposalDto);
-		joinProposal.setClub(clubService.findById(Long.parseLong(insertJoinProposalDto.getClubDtoForJoinProposal().getId())));
+		joinProposal.setClub(clubService.findById(Long.parseLong(insertJoinProposalDto.getClubDtoId().getId())));
 		joinProposal.setProposalStatus(ProposalStatus.PENDING);
 		joinProposal= this.joinProposalRepository.save(joinProposal);
 		 return joinProposalMapper.convertEntityToDto(joinProposal);
@@ -103,5 +106,11 @@ EmailService emailService;
 		User user = userService.findById(joinProposal.getUser().getId());
 		
 		emailService.sendMail(user.getMailAddress(), "club non approvato", "la tua proposta non è stata approvata");
+	}
+	
+	public List<JoinProposalDto> findAllByClub(Long id) throws Exception {
+		Admin admin = adminService.findById(id);
+		 List<JoinProposalDto> joinProposalsDto = joinProposalMapper.convertEntityToDto(this.joinProposalRepository.findAllJoinProposalByAdmin(admin.getId()));
+		 return joinProposalsDto;
 	}
 }

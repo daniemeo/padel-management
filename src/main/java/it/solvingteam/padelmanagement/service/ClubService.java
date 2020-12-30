@@ -16,6 +16,7 @@ import it.solvingteam.padelmanagement.repository.ClubRepository;
 
 @Service
 public class ClubService {
+	
 	@Autowired
 	ClubRepository clubRepository;
 	
@@ -46,5 +47,8 @@ public class ClubService {
 		this.clubRepository.delete(club);
 	}
 	
-
+    public Club findClubByAdmin(Long idAdmin) {
+    	return this.clubRepository.findCluByAdmin_Id(idAdmin);
+    	
+    }
 }

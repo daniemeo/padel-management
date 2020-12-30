@@ -1,7 +1,6 @@
 package it.solvingteam.padelmanagement.model.club;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Basic;

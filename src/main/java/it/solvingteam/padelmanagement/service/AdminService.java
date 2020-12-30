@@ -14,7 +14,6 @@ import it.solvingteam.padelmanagement.model.admin.Admin;
 import it.solvingteam.padelmanagement.model.user.Role;
 import it.solvingteam.padelmanagement.model.user.User;
 import it.solvingteam.padelmanagement.repository.AdminRepository;
-import it.solvingteam.padelmanagement.util.Util;
 
 @Service
 public class AdminService {
@@ -40,13 +39,8 @@ public class AdminService {
 		return adminMapper.convertEntityToDto(admin);
 	}
 	
-	public AdminDto findById(@NotNull String id) throws Exception{
-		
-		if(!Util.isNumber(id)) {
-			throw new Exception("l'id deve essere un numero");
-		}
-		Admin admin =  this.adminRepository.findById(Long.parseLong(id)).orElse(null);
-		return adminMapper.convertEntityToDto(admin);
+	public Admin findById(Long id) throws Exception{
+		return  this.adminRepository.findById(id).orElse(null);
 
 	}
 	

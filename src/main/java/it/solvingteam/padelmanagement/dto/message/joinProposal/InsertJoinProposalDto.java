@@ -4,7 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import it.solvingteam.padelmanagement.dto.UserDto;
-import it.solvingteam.padelmanagement.dto.message.club.ClubDtoForJoinProposal;
+import it.solvingteam.padelmanagement.dto.message.club.ClubDtoId;
 
 public class InsertJoinProposalDto {
 	 @NotBlank
@@ -13,7 +13,7 @@ public class InsertJoinProposalDto {
 	 @Valid
 	 private UserDto userDto;
 	 @Valid
-	 private  ClubDtoForJoinProposal  clubDtoForJoinProposal;
+	 private  ClubDtoId  clubDtoId;
 	 
 	 public String getUserLevel() {
 		return userLevel;
@@ -33,12 +33,13 @@ public class InsertJoinProposalDto {
 	public void setUserDto(UserDto userDto) {
 		this.userDto = userDto;
 	}
-	public ClubDtoForJoinProposal getClubDtoForJoinProposal() {
-		return clubDtoForJoinProposal;
+	public ClubDtoId getClubDtoId() {
+		return clubDtoId;
 	}
-	public void setClubDtoForJoinProposal(ClubDtoForJoinProposal clubDtoForJoinProposal) {
-		this.clubDtoForJoinProposal = clubDtoForJoinProposal;
+	public void setClubDtoId(ClubDtoId clubDtoId) {
+		this.clubDtoId = clubDtoId;
 	}
+	
 
 	 
 	 
