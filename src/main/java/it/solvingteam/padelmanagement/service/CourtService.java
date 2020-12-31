@@ -39,8 +39,10 @@ public class CourtService {
 		return courtMapper.convertEntityToDto(court);
 	}
 
-	public CourtDto findById(String id) {
-		return courtMapper.convertEntityToDto(this.courtRepository.findById(Long.parseLong(id)).get());
+	public CourtDto findById(String id) throws Exception {
+	
+		Court court = this.courtRepository.findById(Long.parseLong(id)).get();
+		return courtMapper.convertEntityToDto(court);
 
 	}
 
@@ -48,8 +50,14 @@ public class CourtService {
 		return this.courtRepository.findById(Long.parseLong(id)).get();
 	}
 
-	public List<CourtDto> findAll(String idAdmin) {
+	public List<CourtDto> findAll(String idAdmin) throws Exception {
+		if (!StringUtils.isNumeric(idAdmin)) {
+			throw new Exception("id non valido");
+		}
 		Club club = clubService.findClubByAdmin(Long.parseLong(idAdmin));
+		if (club == null) {
+			throw new Exception("id inesistente");
+		}
 		List<CourtDto> courts = courtMapper.convertEntityToDto(courtRepository.findAllCourtByClub_id(club.getId()));
 		return courts;
 	}
@@ -67,7 +75,7 @@ public class CourtService {
 
 	public SuccessMessageDto setStatus(String id) throws Exception {
 
-		if (id == null || !StringUtils.isNumeric(id)) {
+		if (!StringUtils.isNumeric(id)) {
 			throw new Exception("id non valido");
 		}
 		Court courtDb = courtRepository.findById(Long.parseLong(id)).get();

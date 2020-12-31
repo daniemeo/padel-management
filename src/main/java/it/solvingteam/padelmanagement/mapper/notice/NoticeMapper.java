@@ -8,14 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.solvingteam.padelmanagement.dto.NoticeDto;
+import it.solvingteam.padelmanagement.dto.message.notice.InsertNoticeDto;
 import it.solvingteam.padelmanagement.mapper.AbstractMapper;
-import it.solvingteam.padelmanagement.mapper.club.ClubMapper;
+import it.solvingteam.padelmanagement.mapper.club.GetClubMapper;
 import it.solvingteam.padelmanagement.model.notice.Notice;
 
 @Component
 public class NoticeMapper extends AbstractMapper<Notice, NoticeDto> {
 	@Autowired
-	ClubMapper clubMapper;
+	GetClubMapper getClubMapper;
 
 	@Override
 	public NoticeDto convertEntityToDto(Notice entity) {
@@ -26,7 +27,7 @@ public class NoticeMapper extends AbstractMapper<Notice, NoticeDto> {
 		dto.setId(String.valueOf(entity.getId()));
 		dto.setMessage(entity.getMessage());
 		dto.setCreationDate(String.valueOf(entity.getCreationDate()));
-		dto.setClubDto(clubMapper.convertEntityToDto(entity.getClub()));
+		dto.setClubDto(getClubMapper.convertEntityToDto(entity.getClub()));
 		return dto;
 
 	}
@@ -42,10 +43,20 @@ public class NoticeMapper extends AbstractMapper<Notice, NoticeDto> {
 		}
 		notice.setMessage(dto.getMessage());
 		notice.setCreationDate(LocalDate.parse(dto.getCreationDate()));
-		notice.setClub(clubMapper.convertDtoToEntity(dto.getClubDto()));
 		return notice;
 	}
 
+	public Notice convertDtoToEntity(InsertNoticeDto dto) {
+		if (dto == null) {
+			return null;
+		}
+		Notice notice = new Notice();
+		notice.setMessage(dto.getMessage());
+		notice.setCreationDate(LocalDate.parse(dto.getCreationDate()));
+		return notice;
+	}
+
+	
 	@Override
 	public List<NoticeDto> convertEntityToDto(List<Notice> entities) {
 		if (entities == null) {

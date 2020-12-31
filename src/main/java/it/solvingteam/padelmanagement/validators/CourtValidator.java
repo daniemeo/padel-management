@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.message.court.InsertCourtDto;
 import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.model.court.Court;

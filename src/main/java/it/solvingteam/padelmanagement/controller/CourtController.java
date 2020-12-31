@@ -50,7 +50,7 @@ public class CourtController {
 	}
 
 	@GetMapping("listAll/{idAdmin}")
-	public ResponseEntity<List<CourtDto>> list(@PathVariable String idAdmin) { 
+	public ResponseEntity<List<CourtDto>> list(@PathVariable String idAdmin) throws Exception { 
 		List<CourtDto> court = courtService.findAll(idAdmin);
 		return ResponseEntity.status(HttpStatus.OK).body(court);
 	}
@@ -62,7 +62,7 @@ public class CourtController {
 	}
 	
 	@PutMapping("update")
-	public ResponseEntity<CourtDto> update(@Valid @RequestBody CourtDto courtDto, BindingResult bindingResult)throws Exception {
+	public ResponseEntity<CourtDto> update(@Valid @RequestBody CourtDto courtDto, BindingResult bindingResult) throws Exception {
 		courtValidatorUpdate.validate(courtDto, bindingResult);
 		if (bindingResult.hasErrors()) {
 			throw new BindingResultException(bindingResult);
