@@ -3,7 +3,6 @@ package it.solvingteam.padelmanagement.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import it.solvingteam.padelmanagement.model.player.Player;
 import it.solvingteam.padelmanagement.model.user.Role;
 import it.solvingteam.padelmanagement.model.user.User;
@@ -23,5 +22,15 @@ public class PlayerService {
 		user = userService.updateRole(user);
 		player.setUser(user);
 		return playerRepository.save(player);
+	}
+	
+	public Player getPlayerClub(String id) {
+		return playerRepository.findPlayerClub(Long.parseLong(id));
+	}
+	
+	public Player findById(String id) throws Exception {
+		
+		return this.playerRepository.findById(Long.parseLong(id)).get();
+
 	}
 }

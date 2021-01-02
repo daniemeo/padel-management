@@ -12,7 +12,7 @@ import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.service.JoinProposalService;
 
 @RestController
-@RequestMapping("adminController")
+@RequestMapping("admin")
 public class AdminController {
 	@Autowired
 	JoinProposalService joinProposalService;

@@ -6,13 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import it.solvingteam.padelmanagement.dto.JoinProposalDto;
 import it.solvingteam.padelmanagement.dto.PlayerDto;
 import it.solvingteam.padelmanagement.mapper.AbstractMapper;
-import it.solvingteam.padelmanagement.mapper.club.ClubMapper;
+import it.solvingteam.padelmanagement.mapper.club.GetClubMapper;
 import it.solvingteam.padelmanagement.mapper.game.GameMapper;
 import it.solvingteam.padelmanagement.mapper.user.UserMapper;
-import it.solvingteam.padelmanagement.model.joinProposal.JoinProposal;
 import it.solvingteam.padelmanagement.model.player.Player;
 
 @Component
@@ -21,7 +19,7 @@ public class PlayerMapper extends AbstractMapper<Player, PlayerDto>{
 	UserMapper userMapper;
 	
 	@Autowired
-    ClubMapper clubMapper;
+    GetClubMapper getClubMapper;
 	
 	@Autowired
 	GameMapper gameMapper;
@@ -35,8 +33,7 @@ public class PlayerMapper extends AbstractMapper<Player, PlayerDto>{
 	 dto.setId(String.valueOf(entity.getId()));
 	 dto.setPlayerLevel(String.valueOf(entity.getPlayerLevel()));
 	 dto.setUserDto(userMapper.convertEntityToDto(entity.getUser()));
-	 dto.setClubDto(clubMapper.convertEntityToDto(entity.getClub()));
-	 dto.setGameDto(gameMapper.convertEntityToDto(entity.getGames()));
+	 dto.setClubDto(getClubMapper.convertEntityToDto(entity.getClub()));
 	 return dto;
 	}
 
@@ -51,7 +48,7 @@ public class PlayerMapper extends AbstractMapper<Player, PlayerDto>{
 		}
 		player.setPlayerLevel(Integer.parseInt(dto.getPlayerLevel()));
 		player.setUser(userMapper.convertDtoToEntity(dto.getUserDto()));
-		player.setClub(clubMapper.convertDtoToEntity(dto.getClubDto()));
+		player.setClub(getClubMapper.convertDtoToEntity(dto.getClubDto()));
 		player.setGames(gameMapper.convertDtoToEntity(dto.getGameDto()));
 		return player;
 	}

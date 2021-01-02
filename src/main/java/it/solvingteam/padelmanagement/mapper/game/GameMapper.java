@@ -36,7 +36,6 @@ PlayerMapper playerMapper;
 		dto.setMissingPlayers(String.valueOf(entity.getMissingPlayers()));
 		dto.setCourtDto(courtMapper.convertEntityToDto(entity.getCourt()));
 		dto.setPlayerDto(playerMapper.convertEntityToDto(entity.getPlayer()));
-		dto.setPlayersDto(playerMapper.convertEntityToDto(entity.getPlayers()));
 		return dto;
 		
 	}
