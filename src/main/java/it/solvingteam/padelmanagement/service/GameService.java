@@ -17,6 +17,7 @@ import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
+import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.mapper.court.CourtMapper;
 import it.solvingteam.padelmanagement.mapper.game.GameMapper;
 import it.solvingteam.padelmanagement.model.court.Court;
@@ -57,15 +58,20 @@ public class GameService {
 	public Game getGame(@NotNull String id) {
 		return this.gameRepository.findById(Long.parseLong(id)).orElse(null);
 	}
-
+	
+	public List<GameCheckDto> update(UpdateGameDto updateGameDto) throws Exception {
+		this.delete(updateGameDto.getGameId());
+		return this.check(updateGameDto.getGameCheckDto());
+	}
+	
 	public SuccessMessageDto delete(String id) throws Exception {
 		Game game = this.getGame(id);
 		if (game.getDate().isBefore(LocalDate.now().minusDays(1))) {
-			throw new Exception("imposssibile eliminare una partita terminata ");
+			throw new Exception("imposssibile eliminare una partita terminata");
 		}
 		if (game.getDate().equals(LocalDate.now()) && LocalTime.of(game.getSlots().iterator().next().getHour(), game.getSlots().iterator().next().getMinute())
 				.isBefore(LocalTime.now().plusMinutes(30))) {
-			throw new Exception("impossibile eliminare una partita che sta per iniziare");
+			throw new Exception("impossibile eliminare/modificare una partita terminata o che sta per iniziare");
 
 		}
 		gameRepository.delete(game);

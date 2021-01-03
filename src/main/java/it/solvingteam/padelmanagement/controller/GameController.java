@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
+import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
 import it.solvingteam.padelmanagement.service.GameService;
 import it.solvingteam.padelmanagement.validators.GameCheckValidator;
@@ -65,6 +68,14 @@ public class GameController {
 		 
 	        return ResponseEntity.status(HttpStatus.OK).body(gameService.delete(id));
 		}
-
+	 
+	 @PutMapping("update")
+		public ResponseEntity<List<GameCheckDto>>update(@Valid @RequestBody UpdateGameDto updateGameDto, BindingResult bindingResult) throws Exception {
+			if (bindingResult.hasErrors()) {
+				throw new BindingResultException(bindingResult);
+			}
+			List<GameCheckDto> games= gameService.update(updateGameDto);
+			return ResponseEntity.status(HttpStatus.OK).body(games);
+		}
 	
 }
