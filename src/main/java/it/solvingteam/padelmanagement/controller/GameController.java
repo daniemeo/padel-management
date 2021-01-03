@@ -49,4 +49,10 @@ public class GameController {
 		 GameDto game = gameService.insert(gameCheckDto);
 		 return ResponseEntity.status(HttpStatus.OK).body(game);
 	}
+	
+//	@PostMapping("gameSearch")
+//	public ResponseEntity<List<>> SearchGame(@RequestBody Long id){
+//		
+//	}
+	
 }

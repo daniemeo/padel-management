@@ -109,6 +109,11 @@ public class Game {
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
+
+	@Override
+	public String toString() {
+		return "\n" + "date=" + date +"\n" + " court=" + court.getName()+ "\n" + " player=" + player.getUser().getName() + " "+ player.getUser().getSurname() ;
+	}
 	
 	
 	

@@ -42,33 +42,52 @@ public class GameService {
 	@Autowired
 	GameMapper gameMapper;
 
+	@Autowired
+	EmailService emailService;
+
 	public List<GameCheckDto> check(GameCheckDto gameCheckDto) throws Exception {
-		
+
 		Player player = playerService.getPlayerClub(gameCheckDto.getPlayerId());
 		List<Game> games = gameRepository.listAllGamesSearch(LocalDate.parse(gameCheckDto.getDate()),
 				player.getClub().getId());
 		Set<CourtDto> allCourtsAvailable = new HashSet<>();
+		List<GameCheckDto> gamesAvailable = new ArrayList<>();
+		List<Slot> slotInsert = new ArrayList<Slot>();
 
+		for (String slot : gameCheckDto.getSlots()) {
+			Slot slotDb = slotRepository.findById(Long.parseLong(slot)).get();
+			slotInsert.add(slotDb);
+		}
+	
+		Set<CourtDto> allCourts = courtService.findAll(String.valueOf(player.getClub().getAdmin().getId())).stream()
+				.collect(Collectors.toSet());
+		
+		Boolean trovato = false;
+		//se la lista di partite è vuota, torna la lista di tutti i campi 
 		if (games.isEmpty()) {
-			Set<CourtDto> allCourts = courtService.findAll(String.valueOf(player.getClub().getAdmin().getId())).stream()
-					.collect(Collectors.toSet());
+
 			for (CourtDto court : allCourts) {
 				if (court.getIsInactive() == false) {
 					allCourtsAvailable.add(court);
 				}
 			}
+			for (CourtDto courtDto : allCourtsAvailable) {
+				GameCheckDto gameCheck = new GameCheckDto();
+				gameCheck.setDate(gameCheckDto.getDate());
+				gameCheck.setPlayerId(gameCheckDto.getPlayerId());
+				gameCheck.setSlots(gameCheckDto.getSlots());
+				gameCheck.setCourtDto(courtDto);
+				gamesAvailable.add(gameCheck);
+			}
+			return gamesAvailable;
+
 		}
-		List<Slot> slotInsert = new ArrayList<Slot>();
-		for (String slot : gameCheckDto.getSlots()) {
-			Slot slotDb = slotRepository.findById(Long.parseLong(slot)).get();
-			slotInsert.add(slotDb);
-		}
+
 		// lista di campi non disponibili
 		List<CourtDto> courtsNotAvailable = new ArrayList<CourtDto>();
 
-		Boolean trovato = false;
 		for (Game game : games) {
-			CourtDto court = courtMapper.convertEntityToDto(game.getCourt());
+			CourtDto court = courtService.FindCourtByGame(game.getId());
 			for (Slot slotCheck : slotInsert) {
 				for (Slot slotGame : game.getSlots()) {
 					trovato = slotGame.equals(slotCheck);
@@ -78,6 +97,25 @@ public class GameService {
 				}
 
 			}
+		}
+  
+		if (courtsNotAvailable.isEmpty()) {
+
+			for (CourtDto court : allCourts) {
+				if (court.getIsInactive() == false) {
+					allCourtsAvailable.add(court);
+				}
+			}
+			for (CourtDto courtDto : allCourtsAvailable) {
+				GameCheckDto gameCheck = new GameCheckDto();
+				gameCheck.setDate(gameCheckDto.getDate());
+				gameCheck.setPlayerId(gameCheckDto.getPlayerId());
+				gameCheck.setSlots(gameCheckDto.getSlots());
+				gameCheck.setCourtDto(courtDto);
+				gamesAvailable.add(gameCheck);
+			}
+			return gamesAvailable;
+
 		}
 		// facciamo un set di campi disponibili
 		Boolean available = false;
@@ -89,6 +127,8 @@ public class GameService {
 					available = true;
 				} else {
 					available = false;
+					break;
+					
 				}
 			}
 			if (available) {
@@ -96,7 +136,6 @@ public class GameService {
 			}
 		}
 
-		List<GameCheckDto> gamesAvailable = new ArrayList<>();
 		for (CourtDto court : allCourtsAvailable) {
 			GameCheckDto gameCheck = new GameCheckDto();
 			gameCheck.setDate(gameCheckDto.getDate());
@@ -111,13 +150,14 @@ public class GameService {
 	}
 
 	public GameDto insert(GameCheckDto gameCheckDto) throws Exception {
-		 Boolean continueBooking = false;
+		Boolean continueBooking = false;
 		for (GameCheckDto checkDto : this.check(gameCheckDto)) {
-			if (!checkDto.equals(gameCheckDto)) {
+			if (checkDto.getCourtDto().getId().equals(gameCheckDto.getCourtDto().getId())) {
 				continueBooking = true;
-			}
-			else {
+				break;
+			} else {
 				continueBooking = false;
+				
 			}
 		}
 		if (continueBooking) {
@@ -136,7 +176,13 @@ public class GameService {
 			game.setPlayer(player);
 			game.setSlots(slotInsert);
 			game.setPayed(false);
-			return gameMapper.convertEntityToDto(gameRepository.save(game));
+
+			GameDto gameDto = gameMapper.convertEntityToDto(gameRepository.save(game));
+			if (game.getMissingPlayers() == 0) {
+				emailService.sendMail(game.getPlayer().getUser().getMailAddress(), "partita confermata",
+						"la tua partita è stata confermata" + game);
+			}
+			return gameDto;
 		} else {
 			throw new Exception("Prenotazione non disponibile");
 		}

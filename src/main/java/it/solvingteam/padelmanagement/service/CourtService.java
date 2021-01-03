@@ -101,4 +101,8 @@ public class CourtService {
 
 	}
 
+	public CourtDto FindCourtByGame(Long id) {
+		Court court = courtRepository.findCourtByGames_id(id);
+		return courtMapper.convertEntityToDto(court);
+	}
 }

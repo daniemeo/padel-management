@@ -44,7 +44,6 @@ public class AdminService {
 
 	}
 	
-	
 	public void deleteAdmin(@NotNull String id) {
 		Admin admin =  this.adminRepository.findById(Long.parseLong(id)).orElse(null);
 		this.adminRepository.delete(admin);
