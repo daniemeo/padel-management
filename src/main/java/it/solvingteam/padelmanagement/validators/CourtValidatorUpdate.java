@@ -1,6 +1,7 @@
 package it.solvingteam.padelmanagement.validators;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,11 +36,14 @@ public class CourtValidatorUpdate implements Validator{
 		for (Court courtDb : club.getCourts() ) {
 		  if(courtDb.getName().equals(courtDto.getName())) {
 			  errors.rejectValue("name", "proposalError", "Esiste già un campo con questo nome");
+			  break;
 		  }
 		}
 		for(Game game : court.getGames()) {
-			if(game.getDate().isAfter(LocalDate.now())) {
-				errors.rejectValue("gameDto", "proposalError", "Esiste già un campo con questo nome");
+			if((game.getDate().isAfter(LocalDate.now().minusDays(1)) && (LocalTime.of(game.getSlots().iterator().next().getHour(), game.getSlots().iterator().next().getMinute())
+					.isBefore(LocalTime.now().plusMinutes(30))))) {
+				errors.rejectValue("gameDto", "proposalError", "ci sono delle partite aperte su questo campo!! non puoi modificarlo");
+				break;
 			}
 		}
 	}

@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import it.solvingteam.padelmanagement.dto.UserDto;
-import it.solvingteam.padelmanagement.dto.message.user.UserSigninMessageDto;
 import it.solvingteam.padelmanagement.model.user.User;
 
 

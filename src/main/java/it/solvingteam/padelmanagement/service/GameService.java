@@ -1,17 +1,21 @@
 package it.solvingteam.padelmanagement.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
+import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
 import it.solvingteam.padelmanagement.mapper.court.CourtMapper;
 import it.solvingteam.padelmanagement.mapper.game.GameMapper;
@@ -45,6 +49,31 @@ public class GameService {
 	@Autowired
 	EmailService emailService;
 
+	public List<GameDto> findAll(Long idPlayer) throws Exception {
+		List<GameDto> games = gameMapper.convertEntityToDto(gameRepository.findAllGamesByPlayer_Id(idPlayer));
+		return games;
+	}
+
+	public Game getGame(@NotNull String id) {
+		return this.gameRepository.findById(Long.parseLong(id)).orElse(null);
+	}
+
+	public SuccessMessageDto delete(String id) throws Exception {
+		Game game = this.getGame(id);
+		if (game.getDate().isBefore(LocalDate.now().minusDays(1))) {
+			throw new Exception("imposssibile eliminare una partita terminata ");
+		}
+		if (game.getDate().equals(LocalDate.now()) && LocalTime.of(game.getSlots().iterator().next().getHour(), game.getSlots().iterator().next().getMinute())
+				.isBefore(LocalTime.now().plusMinutes(30))) {
+			throw new Exception("impossibile eliminare una partita che sta per iniziare");
+
+		}
+		gameRepository.delete(game);
+		SuccessMessageDto successDto = new SuccessMessageDto("partita eliminata con successo");
+		return successDto;
+
+	}
+
 	public List<GameCheckDto> check(GameCheckDto gameCheckDto) throws Exception {
 
 		Player player = playerService.getPlayerClub(gameCheckDto.getPlayerId());
@@ -58,12 +87,12 @@ public class GameService {
 			Slot slotDb = slotRepository.findById(Long.parseLong(slot)).get();
 			slotInsert.add(slotDb);
 		}
-	
+
 		Set<CourtDto> allCourts = courtService.findAll(String.valueOf(player.getClub().getAdmin().getId())).stream()
 				.collect(Collectors.toSet());
-		
+
 		Boolean trovato = false;
-		//se la lista di partite è vuota, torna la lista di tutti i campi 
+		// se la lista di partite è vuota, torna la lista di tutti i campi
 		if (games.isEmpty()) {
 
 			for (CourtDto court : allCourts) {
@@ -98,7 +127,7 @@ public class GameService {
 
 			}
 		}
-  
+
 		if (courtsNotAvailable.isEmpty()) {
 
 			for (CourtDto court : allCourts) {
@@ -128,7 +157,7 @@ public class GameService {
 				} else {
 					available = false;
 					break;
-					
+
 				}
 			}
 			if (available) {
@@ -157,7 +186,7 @@ public class GameService {
 				break;
 			} else {
 				continueBooking = false;
-				
+
 			}
 		}
 		if (continueBooking) {

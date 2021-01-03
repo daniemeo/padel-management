@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.solvingteam.padelmanagement.dto.GameDto;
+import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
 import it.solvingteam.padelmanagement.service.GameService;
@@ -50,9 +54,17 @@ public class GameController {
 		 return ResponseEntity.status(HttpStatus.OK).body(game);
 	}
 	
-//	@PostMapping("gameSearch")
-//	public ResponseEntity<List<>> SearchGame(@RequestBody Long id){
-//		
-//	}
+	 @GetMapping("listAll/{playerId}")
+		public ResponseEntity<List<GameDto>> list(@PathVariable Long playerId) throws Exception {
+	      List<GameDto> gameDto= gameService.findAll(playerId);
+			return ResponseEntity.status(HttpStatus.OK).body(gameDto);	
+		}
+	 
+	 @DeleteMapping("delete/{id}")
+	    public ResponseEntity<SuccessMessageDto> delete(@PathVariable String id) throws Exception{
+		 
+	        return ResponseEntity.status(HttpStatus.OK).body(gameService.delete(id));
+		}
+
 	
 }

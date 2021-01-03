@@ -1,9 +1,6 @@
 package it.solvingteam.padelmanagement.validators;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package it.solvingteam.padelmanagement.service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import it.solvingteam.padelmanagement.dto.UserDto;
 import it.solvingteam.padelmanagement.dto.message.user.InsertUserDto;
-import it.solvingteam.padelmanagement.dto.message.user.UserSigninMessageDto;
 import it.solvingteam.padelmanagement.mapper.user.UserMapper;
 import it.solvingteam.padelmanagement.model.user.Role;
 import it.solvingteam.padelmanagement.model.user.User;

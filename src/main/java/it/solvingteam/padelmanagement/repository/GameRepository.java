@@ -12,5 +12,7 @@ public interface GameRepository extends JpaRepository<Game, Long>{
 	
 	@Query("from Game g right join fetch g.player p where g.date =?1 and p.club.id =?2")
 	public List<Game> listAllGamesSearch(LocalDate date,Long id);
+	
+	public  List<Game> findAllGamesByPlayer_Id(Long id);
 
 }
