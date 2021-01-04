@@ -27,7 +27,8 @@ public class User {
 	private String mobile;
 	private String username;
 	private String password;
-	@Lob @Basic(fetch=FetchType.EAGER)
+	@Lob 
+	@Basic(fetch=FetchType.EAGER)
 	@Column(name="PROFILE_PIC")
 	private Byte[] profilePic;
 	@Enumerated(EnumType.STRING)

@@ -69,9 +69,7 @@ public class UserService {
 	}
 
 	public UserDto update(UpdateUserDto updateUserDto) throws Exception {
-
 		User user = userMapper.convertDtoToEntityUpdate(updateUserDto);
-
 		return userMapper.convertEntityToDto(userRepository.save(user));
 	}
 

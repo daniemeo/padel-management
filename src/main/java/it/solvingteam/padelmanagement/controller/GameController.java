@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
+import it.solvingteam.padelmanagement.dto.message.game.GameUpdateMissingPlayersDto;
 import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
 import it.solvingteam.padelmanagement.service.GameService;
@@ -70,12 +70,22 @@ public class GameController {
 		}
 	 
 	 @PutMapping("update")
-		public ResponseEntity<List<GameCheckDto>>update(@Valid @RequestBody UpdateGameDto updateGameDto, BindingResult bindingResult) throws Exception {
+		public ResponseEntity<List<GameCheckDto>> update(@Valid @RequestBody UpdateGameDto updateGameDto, BindingResult bindingResult) throws Exception {
 			if (bindingResult.hasErrors()) {
 				throw new BindingResultException(bindingResult);
 			}
 			List<GameCheckDto> games= gameService.update(updateGameDto);
 			return ResponseEntity.status(HttpStatus.OK).body(games);
 		}
+	 
+	 @PutMapping("update/missingPlayers")
+		public ResponseEntity<GameDto> updateMissingPlayer(@Valid @RequestBody GameUpdateMissingPlayersDto gameUpdateMissingPlayersDto, BindingResult bindingResult) throws Exception {
+			if (bindingResult.hasErrors()) {
+				throw new BindingResultException(bindingResult);
+			}
+			GameDto games= gameService.updateMissingPlayers(gameUpdateMissingPlayersDto);
+			return ResponseEntity.status(HttpStatus.OK).body(games);
+		}
+	 
 	
 }
