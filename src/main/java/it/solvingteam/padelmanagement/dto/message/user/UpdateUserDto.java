@@ -1,18 +1,34 @@
-package it.solvingteam.padelmanagement.dto;
+package it.solvingteam.padelmanagement.dto.message.user;
 
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-
-public class UserDto {
+public class UpdateUserDto {
 	@NotNull
 	private String id;
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String surname;
+	
+	@NotBlank
 	private String dateOfBirth;
+	
+	@Email(regexp = ".+@.+\\.[a-z]+")
 	private String mailAddress;
+	
+	@NotBlank
+	@Size(message = "il campo mobile deve contenere anche il prefisso",max = 13, min = 13)
 	private String mobile;
+	@NotBlank
 	private String username;
+	@NotBlank
+	private String password;
+	@NotBlank
+    private String repeatePassword;
 	private Byte[] profilePic;
 	private String role;
 
@@ -58,12 +74,18 @@ public class UserDto {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-//	public String getPassword() {
-//		return password;
-//	}
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getRepeatePassword() {
+		return repeatePassword;
+	}
+	public void setRepeatePassword(String repeatePassword) {
+		this.repeatePassword = repeatePassword;
+	}
 	public Byte[] getProfilePic() {
 		return profilePic;
 	}
@@ -76,13 +98,6 @@ public class UserDto {
 	public void setRole(String role) {
 		this.role = role;
 	}
-
-	@Override
-	public String toString() {
-		return  "username=" + username ;
-	}
-
-	
 	
 	
 }
