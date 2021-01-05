@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
+import it.solvingteam.padelmanagement.dto.message.game.GameJoinDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameUpdateMissingPlayersDto;
 import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
@@ -93,5 +94,11 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.OK).body(gameDto);	
 		}
 	 
-	
+		@PutMapping("callForAction")
+		public ResponseEntity<SuccessMessageDto> callForAction (@Valid @RequestBody GameJoinDto gameJoinDto, BindingResult bindingResult) throws Exception {
+			if (bindingResult.hasErrors()) {
+				throw new BindingResultException(bindingResult);
+			}
+			   return ResponseEntity.status(HttpStatus.OK).body(gameService.gameJoin(gameJoinDto));
+		}
 }

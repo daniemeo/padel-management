@@ -15,6 +15,7 @@ public interface GameRepository extends JpaRepository<Game, Long>{
 	
 	public  List<Game> findAllGamesByPlayer_Id(Long id);
 	
-	public List<Game> findAllGamesByPlayer_IdNotAndDateAfterAndMissingPlayersNot(Long id, LocalDate date, Integer missingPlayers);
+	//per filtrare call for action(partite) aperte e con giocatori mancanti appartenenti al mio circolo 
+	public List<Game> findAllGamesByPlayer_IdNotAndDateAfterAndMissingPlayersNotAndPlayer_Club_IdEquals(Long id, LocalDate date, Integer missingPlayers, Long ClubId);
 
 }

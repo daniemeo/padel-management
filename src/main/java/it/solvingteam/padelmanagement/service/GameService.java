@@ -17,6 +17,7 @@ import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
+import it.solvingteam.padelmanagement.dto.message.game.GameJoinDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameUpdateMissingPlayersDto;
 import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.mapper.court.CourtMapper;
@@ -79,7 +80,7 @@ public class GameService {
 						"la tua partita è stata confermata" + game);
 				for (Player player : game.getPlayers()) {
 					emailService.sendMail(player.getUser().getMailAddress(), "partita confermata",
-							"la tua partita è stata confermata" + game + "/n" );
+							"la tua partita è stata confermata" + game + "/n");
 				}
 
 			}
@@ -250,11 +251,38 @@ public class GameService {
 			throw new Exception("Prenotazione non disponibile");
 		}
 	}
-	
-	public List<GameDto> findAllCallForAction(String idPlayer) throws Exception{
-		List<Game> callAllForAction = gameRepository.findAllGamesByPlayer_IdNotAndDateAfterAndMissingPlayersNot(Long.parseLong(idPlayer), LocalDate.now().minusDays(1), 0);
+
+	public List<GameDto> findAllCallForAction(String idPlayer) throws Exception {
+		Player player = playerService.findById(idPlayer);
+		List<Game> callAllForAction = gameRepository.findAllGamesByPlayer_IdNotAndDateAfterAndMissingPlayersNotAndPlayer_Club_IdEquals(
+				Long.parseLong(idPlayer), LocalDate.now().minusDays(1), 0, player.getClub().getId());
 		return gameMapper.convertEntityToDto(callAllForAction);
-		
+
 	}
 
+	public SuccessMessageDto gameJoin(GameJoinDto gameJoinDto) throws Exception {
+		Player playerDb = playerService.findById(gameJoinDto.getIdPlayer());
+		Game game = gameRepository.findById(Long.parseLong(gameJoinDto.getIdGame())).get();
+		if (game.getMissingPlayers() > 0) {
+			game.getPlayers().add(playerDb);
+			Integer players = game.getMissingPlayers();
+			Integer missingPlayers = players - 1;
+			game.setMissingPlayers(missingPlayers);
+			gameRepository.save(game);
+			if (game.getMissingPlayers() == 0) {
+				emailService.sendMail(game.getPlayer().getUser().getMailAddress(), "partita confermata",
+						"la tua partita è stata confermata" + game);
+				for (Player player : game.getPlayers()) {
+					emailService.sendMail(player.getUser().getMailAddress(), "partita confermata",
+							"la tua partita è stata confermata" + game + "/n");
+				}
+
+			}
+			SuccessMessageDto successDto = new SuccessMessageDto("prenotazione effettuata!! Complimenti");
+			return successDto;
+		} else {
+			throw new Exception("Mi dispiace ma la partia a cui cercavi di iscriverti è già stata completata!");
+		}
+
+	}
 }
