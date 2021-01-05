@@ -34,6 +34,8 @@ public class PlayerService {
 		return this.playerRepository.findById(Long.parseLong(id)).get();
 
 	}
+	
+	
 
 
 

@@ -87,5 +87,11 @@ public class GameController {
 			return ResponseEntity.status(HttpStatus.OK).body(games);
 		}
 	 
+		@GetMapping("listAllCallForAction/{playerId}")
+		public ResponseEntity<List<GameDto>> listAllCallForAction(@PathVariable String playerId) throws Exception {
+	      List<GameDto> gameDto= gameService.findAllCallForAction(playerId);
+			return ResponseEntity.status(HttpStatus.OK).body(gameDto);	
+		}
+	 
 	
 }

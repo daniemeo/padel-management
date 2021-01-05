@@ -112,8 +112,13 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "\n" + "date=" + date +"\n" + " court=" + court.getName()+ "\n" + " player=" + player.getUser().getName() + " "+ player.getUser().getSurname() ;
+		
+			return "\n" + "date=" + date +"\n" + " court=" + court.getName()+ "\n" + " player=" + player.getUser().getName() + " "+ player.getUser().getSurname() +
+					"\n" + "orario inizio partita " + slots.iterator().next().toString();
+		
 	}
+
+
 	
 	
 	

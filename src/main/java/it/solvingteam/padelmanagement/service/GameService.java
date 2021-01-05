@@ -79,7 +79,7 @@ public class GameService {
 						"la tua partita è stata confermata" + game);
 				for (Player player : game.getPlayers()) {
 					emailService.sendMail(player.getUser().getMailAddress(), "partita confermata",
-							"la tua partita è stata confermata" + game);
+							"la tua partita è stata confermata" + game + "/n" );
 				}
 
 			}
@@ -249,6 +249,12 @@ public class GameService {
 		} else {
 			throw new Exception("Prenotazione non disponibile");
 		}
+	}
+	
+	public List<GameDto> findAllCallForAction(String idPlayer) throws Exception{
+		List<Game> callAllForAction = gameRepository.findAllGamesByPlayer_IdNotAndDateAfterAndMissingPlayersNot(Long.parseLong(idPlayer), LocalDate.now().minusDays(1), 0);
+		return gameMapper.convertEntityToDto(callAllForAction);
+		
 	}
 
 }
