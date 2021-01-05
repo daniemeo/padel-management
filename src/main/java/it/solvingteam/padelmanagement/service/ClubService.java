@@ -51,4 +51,8 @@ public class ClubService {
     	return this.clubRepository.findCluByAdmin_Id(idAdmin);
     	
     }
+    
+  
+    	
+    
 }

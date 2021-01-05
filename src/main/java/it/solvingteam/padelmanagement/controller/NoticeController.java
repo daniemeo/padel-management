@@ -46,7 +46,7 @@ public class NoticeController {
 	}
 	
 	@GetMapping("listAll/{idAdmin}")
-	public ResponseEntity<List<NoticeDto>> list(@PathVariable String idAdmin) throws Exception { 
+	public ResponseEntity<List<NoticeDto>> listAllForAdmin(@PathVariable String idAdmin) throws Exception { 
 		List<NoticeDto> notice = noticeService.findAll(idAdmin);
 		return ResponseEntity.status(HttpStatus.OK).body(notice);
 	}
@@ -65,5 +65,10 @@ public class NoticeController {
 
         return ResponseEntity.status(HttpStatus.OK).body(noticeService.delete(id));
 	}
-
+	
+	@GetMapping("dashboardPlayer/{idPlayer}")
+	public ResponseEntity<List<NoticeDto>> listAllForPlayer(@PathVariable String idPlayer) throws Exception { 
+		List<NoticeDto> notice = noticeService.findAllForPlayer(idPlayer);
+		return ResponseEntity.status(HttpStatus.OK).body(notice);
+	}
 }

@@ -13,6 +13,7 @@ import it.solvingteam.padelmanagement.dto.message.notice.InsertNoticeDto;
 import it.solvingteam.padelmanagement.mapper.notice.NoticeMapper;
 import it.solvingteam.padelmanagement.model.club.Club;
 import it.solvingteam.padelmanagement.model.notice.Notice;
+import it.solvingteam.padelmanagement.model.player.Player;
 import it.solvingteam.padelmanagement.repository.NoticeRepository;
 
 @Service
@@ -25,6 +26,9 @@ public class NoticeService {
 
 	@Autowired
 	NoticeMapper noticeMapper;
+	
+	@Autowired 
+	PlayerService playerService;
 
 	public NoticeDto insert(InsertNoticeDto insertNoticeDto) {
 		Club club = clubService.findClubByAdmin(Long.parseLong(insertNoticeDto.getAdminId()));
@@ -68,5 +72,15 @@ public class NoticeService {
 		this.noticeRepository.delete(notice);
 		SuccessMessageDto successDto = new SuccessMessageDto("notice eliminata con successo");
 		return successDto;
+	}
+	
+	public List<NoticeDto> findAllForPlayer(String idPlayer) throws Exception {
+		if (!StringUtils.isNumeric(idPlayer)) {
+			throw new Exception("id non valido");
+		}
+		Player player = playerService.getPlayerClub(idPlayer);
+		
+		List<NoticeDto> notice = noticeMapper.convertEntityToDto(noticeRepository.findAllNoticeByClub_id(player.getClub().getId()));
+		return notice;
 	}
 }
