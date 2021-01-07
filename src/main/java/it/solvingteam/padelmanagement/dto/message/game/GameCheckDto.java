@@ -13,7 +13,7 @@ import it.solvingteam.padelmanagement.dto.CourtDto;
 public class GameCheckDto {
 	@NotBlank
 	private String date;
-	@NotNull
+	
 	private String playerId;
 	@NotNull
 	private List<String> slots;

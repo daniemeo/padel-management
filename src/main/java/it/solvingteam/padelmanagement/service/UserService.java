@@ -60,13 +60,13 @@ public class UserService {
 
 	}
 
-	public UserDto signIn(String username, String password) throws Exception {
-		UserDto userDto = userMapper.convertEntityToDto(userRepository.findByUsernameAndPassword(username, password));
-		if (userDto == null) {
-			throw new Exception("credenziali errate");
-		}
-		return userDto;
-	}
+//	public UserDto signIn(String username, String password) throws Exception {
+//		UserDto userDto = userMapper.convertEntityToDto(userRepository.findByUsernameAndPassword(username, password));
+//		if (userDto == null) {
+//			throw new Exception("credenziali errate");
+//		}
+//		return userDto;
+//	}
 
 	public UserDto update(UpdateUserDto updateUserDto) throws Exception {
 		User user = userMapper.convertDtoToEntityUpdate(updateUserDto);

@@ -6,5 +6,7 @@ import it.solvingteam.padelmanagement.model.admin.Admin;
 
 
 public interface AdminRepository extends JpaRepository<Admin, Long>{
+	
+	public Admin findAdminByUser_username(String username);
 
 }

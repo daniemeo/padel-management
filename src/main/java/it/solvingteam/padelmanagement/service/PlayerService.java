@@ -35,6 +35,10 @@ public class PlayerService {
 
 	}
 	
+	public Player findByUsername(String username) {
+		return playerRepository.findPlayerByUser_username(username);
+	}
+	
 	
 	
 	

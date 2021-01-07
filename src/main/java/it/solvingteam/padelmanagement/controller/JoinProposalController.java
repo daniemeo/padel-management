@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.solvingteam.padelmanagement.dto.JoinProposalDto;
 import it.solvingteam.padelmanagement.dto.message.joinProposal.InsertJoinProposalDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
+import it.solvingteam.padelmanagement.model.admin.Admin;
+import it.solvingteam.padelmanagement.service.AdminService;
 import it.solvingteam.padelmanagement.service.JoinProposalService;
+import it.solvingteam.padelmanagement.util.TokenDecripter;
 import it.solvingteam.padelmanagement.validators.JoinProposalValidator;
 
 @RestController
@@ -31,10 +35,14 @@ public class JoinProposalController {
 	
 	@Autowired
 	JoinProposalValidator joinProposalValidator;
+	@Autowired 
+	AdminService adminService;
 	
-	 @GetMapping("listAll/{id}")
-		public ResponseEntity<List<JoinProposalDto>> list(@PathVariable Long id) throws Exception {
-	      List<JoinProposalDto> joinProposalDto = joinProposalService.findAllByClub(id);
+	 @GetMapping("listAll")
+		public ResponseEntity<List<JoinProposalDto>> list() throws Exception {
+		String username = TokenDecripter.decripter();
+		Admin admin = adminService.findByUsername(username);
+	      List<JoinProposalDto> joinProposalDto = joinProposalService.findAllByClub(admin.getId());
 			return ResponseEntity.status(HttpStatus.OK).body(joinProposalDto);	
 		}
 	 

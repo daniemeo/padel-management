@@ -40,23 +40,14 @@ public class UserController {
 	@Autowired
 	UserUpdateValidator userUpdateValidator;
 
-	@PostMapping("signup")
-	public ResponseEntity<UserDto> signupUser(@Valid @RequestBody InsertUserDto insertUserDto,
-			BindingResult bindingResult) throws Exception {
-		userSignUpMessageValidator.validate(insertUserDto, bindingResult);
-		if (bindingResult.hasErrors()) {
-			throw new BindingResultException(bindingResult);
-		}
-		UserDto userDto = userService.signup(insertUserDto);
-		return ResponseEntity.status(HttpStatus.OK).body(userDto);
-	}
 
-	@PostMapping("login")
-	public ResponseEntity<UserDto> signinUser(@Valid @RequestBody UserSigninMessageDto userSigninMessageDto)
-			throws Exception {
-		UserDto userDto = userService.signIn(userSigninMessageDto.getUsername(), userSigninMessageDto.getPassword());
-		return ResponseEntity.status(HttpStatus.OK).body(userDto);
-	}
+
+//	@PostMapping("login")
+//	public ResponseEntity<UserDto> signinUser(@Valid @RequestBody UserSigninMessageDto userSigninMessageDto)
+//			throws Exception {
+//		UserDto userDto = userService.signIn(userSigninMessageDto.getUsername(), userSigninMessageDto.getPassword());
+//		return ResponseEntity.status(HttpStatus.OK).body(userDto);
+//	}
 
 	@GetMapping("show/{id}")
 	public ResponseEntity<UserDto> show(@PathVariable("id") String id) throws Exception, BindingResultException {

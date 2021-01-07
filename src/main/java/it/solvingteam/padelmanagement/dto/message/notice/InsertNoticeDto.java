@@ -8,7 +8,7 @@ public class InsertNoticeDto {
 	private String message;
 	private String creationDate;
 	
-	@NotBlank
+	
 	private String adminId;
 
 	public String getMessage() {

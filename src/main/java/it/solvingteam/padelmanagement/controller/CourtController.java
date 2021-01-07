@@ -21,7 +21,10 @@ import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.court.InsertCourtDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
+import it.solvingteam.padelmanagement.model.admin.Admin;
+import it.solvingteam.padelmanagement.service.AdminService;
 import it.solvingteam.padelmanagement.service.CourtService;
+import it.solvingteam.padelmanagement.util.TokenDecripter;
 import it.solvingteam.padelmanagement.validators.CourtValidator;
 import it.solvingteam.padelmanagement.validators.CourtValidatorUpdate;
 
@@ -34,13 +37,18 @@ public class CourtController {
 
 	@Autowired
 	CourtValidator courtValidator;
-	
+
 	@Autowired
 	CourtValidatorUpdate courtValidatorUpdate;
+	@Autowired
+	AdminService adminService;
 
 	@PostMapping("insertCourt")
 	public ResponseEntity<CourtDto> insertCourt(@Valid @RequestBody InsertCourtDto insertCourtDto,
 			BindingResult bindingResult) throws Exception {
+		String username = TokenDecripter.decripter();
+		Admin admin = adminService.findByUsername(username);
+		insertCourtDto.setAdminId(String.valueOf(admin.getId()));
 		courtValidator.validate(insertCourtDto, bindingResult);
 		if (bindingResult.hasErrors()) {
 			throw new BindingResultException(bindingResult);
@@ -49,9 +57,11 @@ public class CourtController {
 		return ResponseEntity.status(HttpStatus.OK).body(courtDto);
 	}
 
-	@GetMapping("listAll/{idAdmin}")
-	public ResponseEntity<List<CourtDto>> list(@PathVariable String idAdmin) throws Exception { 
-		List<CourtDto> court = courtService.findAll(idAdmin);
+	@GetMapping("listAll")
+	public ResponseEntity<List<CourtDto>> list() throws Exception {
+		String username = TokenDecripter.decripter();
+		Admin admin = adminService.findByUsername(username);
+		List<CourtDto> court = courtService.findAll(String.valueOf(admin.getId()));
 		return ResponseEntity.status(HttpStatus.OK).body(court);
 	}
 
@@ -60,9 +70,10 @@ public class CourtController {
 		return ResponseEntity.status(HttpStatus.OK).body(courtService.findById(id));
 
 	}
-	
+
 	@PutMapping("update")
-	public ResponseEntity<CourtDto> update(@Valid @RequestBody CourtDto courtDto, BindingResult bindingResult) throws Exception {
+	public ResponseEntity<CourtDto> update(@Valid @RequestBody CourtDto courtDto, BindingResult bindingResult)
+			throws Exception {
 		courtValidatorUpdate.validate(courtDto, bindingResult);
 		if (bindingResult.hasErrors()) {
 			throw new BindingResultException(bindingResult);
@@ -70,10 +81,10 @@ public class CourtController {
 		CourtDto courtDtoUpdate = courtService.update(courtDto);
 		return ResponseEntity.status(HttpStatus.OK).body(courtDtoUpdate);
 	}
-	
-	@DeleteMapping("delete/{id}")
-    public ResponseEntity<SuccessMessageDto> deleteCourt(@PathVariable String id) throws Exception{
 
-        return ResponseEntity.status(HttpStatus.OK).body(courtService.setStatus(id));
+	@DeleteMapping("delete/{id}")
+	public ResponseEntity<SuccessMessageDto> deleteCourt(@PathVariable String id) throws Exception {
+
+		return ResponseEntity.status(HttpStatus.OK).body(courtService.setStatus(id));
 	}
 }

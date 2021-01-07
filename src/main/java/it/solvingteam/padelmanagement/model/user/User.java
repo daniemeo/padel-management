@@ -35,6 +35,10 @@ public class User {
 	private Role role;
 	
 	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Long getId() {
 		return id;
 	}

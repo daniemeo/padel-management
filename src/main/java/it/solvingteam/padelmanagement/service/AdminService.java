@@ -26,6 +26,7 @@ public class AdminService {
 	@Autowired
 	UserService userService;
 	
+	
 	public Admin insertAdmin(User user) {
 		user.setRole(Role.ROLE_ADMIN);
 		user = userService.updateRole(user);
@@ -47,6 +48,10 @@ public class AdminService {
 	public void deleteAdmin(@NotNull String id) {
 		Admin admin =  this.adminRepository.findById(Long.parseLong(id)).orElse(null);
 		this.adminRepository.delete(admin);
+	}
+	
+	public Admin findByUsername(String username) {
+		return adminRepository.findAdminByUser_username(username);
 	}
 	
 	

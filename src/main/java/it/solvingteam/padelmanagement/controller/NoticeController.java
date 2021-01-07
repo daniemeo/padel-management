@@ -21,7 +21,12 @@ import it.solvingteam.padelmanagement.dto.NoticeDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.notice.InsertNoticeDto;
 import it.solvingteam.padelmanagement.exception.BindingResultException;
+import it.solvingteam.padelmanagement.model.admin.Admin;
+import it.solvingteam.padelmanagement.model.player.Player;
+import it.solvingteam.padelmanagement.service.AdminService;
 import it.solvingteam.padelmanagement.service.NoticeService;
+import it.solvingteam.padelmanagement.service.PlayerService;
+import it.solvingteam.padelmanagement.util.TokenDecripter;
 
 @RestController
 @RequestMapping("dashboard")
@@ -30,9 +35,18 @@ public class NoticeController {
 	@Autowired
 	NoticeService noticeService;
 	
+	@Autowired 
+	AdminService adminService;
+	
+	@Autowired
+	PlayerService playerService;
+	
 	@PostMapping("insert")
 	public ResponseEntity<NoticeDto> insert(@Valid @RequestBody InsertNoticeDto insertNoticeDto,
 			BindingResult bindingResult) throws Exception {
+		String username = TokenDecripter.decripter();
+		Admin admin = adminService.findByUsername(username);
+		insertNoticeDto.setAdminId(String.valueOf(admin.getId()));
 		if (bindingResult.hasErrors()) {
 			throw new BindingResultException(bindingResult);
 		}
@@ -45,9 +59,11 @@ public class NoticeController {
 
 	}
 	
-	@GetMapping("listAll/{idAdmin}")
-	public ResponseEntity<List<NoticeDto>> listAllForAdmin(@PathVariable String idAdmin) throws Exception { 
-		List<NoticeDto> notice = noticeService.findAll(idAdmin);
+	@GetMapping("listAllPerAdmin")
+	public ResponseEntity<List<NoticeDto>> listAllForAdmin() throws Exception { 
+		String username = TokenDecripter.decripter();
+		Admin admin = adminService.findByUsername(username);
+		List<NoticeDto> notice = noticeService.findAll(String.valueOf(admin.getId()));
 		return ResponseEntity.status(HttpStatus.OK).body(notice);
 	}
 
@@ -66,9 +82,11 @@ public class NoticeController {
         return ResponseEntity.status(HttpStatus.OK).body(noticeService.delete(id));
 	}
 	
-	@GetMapping("dashboardPlayer/{idPlayer}")
-	public ResponseEntity<List<NoticeDto>> listAllForPlayer(@PathVariable String idPlayer) throws Exception { 
-		List<NoticeDto> notice = noticeService.findAllForPlayer(idPlayer);
+	@GetMapping("dashboardPlayer")
+	public ResponseEntity<List<NoticeDto>> listAllForPlayer() throws Exception { 
+		String username = TokenDecripter.decripter();
+		Player player = playerService.findByUsername(username);
+		List<NoticeDto> notice = noticeService.findAllForPlayer(String.valueOf(player.getId()));
 		return ResponseEntity.status(HttpStatus.OK).body(notice);
 	}
 }

@@ -17,7 +17,6 @@ import it.solvingteam.padelmanagement.dto.CourtDto;
 import it.solvingteam.padelmanagement.dto.GameDto;
 import it.solvingteam.padelmanagement.dto.message.SuccessMessageDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameCheckDto;
-import it.solvingteam.padelmanagement.dto.message.game.GameJoinDto;
 import it.solvingteam.padelmanagement.dto.message.game.GameUpdateMissingPlayersDto;
 import it.solvingteam.padelmanagement.dto.message.game.UpdateGameDto;
 import it.solvingteam.padelmanagement.mapper.court.CourtMapper;
@@ -260,11 +259,10 @@ public class GameService {
 
 	}
 
-	public SuccessMessageDto gameJoin(GameJoinDto gameJoinDto) throws Exception {
-		Player playerDb = playerService.findById(gameJoinDto.getIdPlayer());
-		Game game = gameRepository.findById(Long.parseLong(gameJoinDto.getIdGame())).get();
+	public SuccessMessageDto gameJoin(Player player, String idGame) throws Exception {
+		Game game = gameRepository.findById(Long.parseLong(idGame)).get();
 		if (game.getMissingPlayers() > 0) {
-			game.getPlayers().add(playerDb);
+			game.getPlayers().add(player);
 			Integer players = game.getMissingPlayers();
 			Integer missingPlayers = players - 1;
 			game.setMissingPlayers(missingPlayers);
@@ -272,8 +270,8 @@ public class GameService {
 			if (game.getMissingPlayers() == 0) {
 				emailService.sendMail(game.getPlayer().getUser().getMailAddress(), "partita confermata",
 						"la tua partita è stata confermata" + game);
-				for (Player player : game.getPlayers()) {
-					emailService.sendMail(player.getUser().getMailAddress(), "partita confermata",
+				for (Player player1 : game.getPlayers()) {
+					emailService.sendMail(player1.getUser().getMailAddress(), "partita confermata",
 							"la tua partita è stata confermata" + game + "/n");
 				}
 
